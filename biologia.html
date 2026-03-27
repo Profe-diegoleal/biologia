@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biología — Portal de Aprendizaje</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d5a3d;
+    --green-bright: #4a8c5c;
+    --green-light: #7bc47f;
+    --green-pale: #c8e6c9;
+    --lime: #a8d85b;
+    --cream: #f5f0e8;
+    --earth: #8b6914;
+    --amber: #d4920a;
+    --coral: #e07060;
+    --blue-bio: #3a7ca5;
+    --white: #fefcf8;
+    --text-dark: #1a2a1e;
+    --text-mid: #3d5a45;
+    --text-muted: #7a9a82;
+    --shadow-leaf: 0 8px 32px rgba(26,58,42,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Background organic blobs ── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(74,140,92,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -10%;
+    left: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(168,216,91,0.1) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Header ── */
+  header {
+    position: relative;
+    background: var(--green-deep);
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .header-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 80% 50%, rgba(74,140,92,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(168,216,91,0.2) 0%, transparent 50%);
+  }
+
+  /* Animated cell pattern */
+  .cells-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image:
+      radial-gradient(circle at 15% 30%, #7bc47f 2px, transparent 2px),
+      radial-gradient(circle at 35% 70%, #7bc47f 3px, transparent 3px),
+      radial-gradient(circle at 60% 20%, #7bc47f 2px, transparent 2px),
+      radial-gradient(circle at 80% 60%, #7bc47f 4px, transparent 4px),
+      radial-gradient(circle at 90% 10%, #7bc47f 2px, transparent 2px),
+      radial-gradient(circle at 50% 90%, #7bc47f 3px, transparent 3px);
+    background-size: 200px 200px;
+  }
+
+  .header-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .logo-area h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .logo-area h1 span {
+    color: var(--lime);
+    font-style: italic;
+  }
+
+  .logo-area p {
+    color: rgba(245,240,232,0.6);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ── Course Switcher ── */
+  .course-switcher {
+    display: flex;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    padding: 5px;
+    gap: 4px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .course-btn {
+    padding: 0.6rem 1.4rem;
+    border: none;
+    border-radius: 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: rgba(245,240,232,0.7);
+    background: transparent;
+    letter-spacing: 0.02em;
+  }
+
+  .course-btn.active {
+    background: var(--lime);
+    color: var(--green-deep);
+    box-shadow: 0 2px 12px rgba(168,216,91,0.4);
+  }
+
+  .course-btn:not(.active):hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--cream);
+  }
+
+  /* ── Nav bar ── */
+  .nav-bar {
+    background: var(--green-mid);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-tab {
+    padding: 0.9rem 1.4rem;
+    color: rgba(200,230,201,0.7);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.25s;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-tab.active {
+    color: var(--lime);
+    border-bottom-color: var(--lime);
+  }
+
+  .nav-tab:hover:not(.active) {
+    color: var(--green-pale);
+  }
+
+  /* ── Course sections ── */
+  .course-section { display: none; }
+  .course-section.active { display: block; }
+
+  /* ── Content panels ── */
+  .content-panel { display: none; }
+  .content-panel.active { display: block; }
+
+  /* ── Main layout ── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  /* ── Section heading ── */
+  .section-heading {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .section-heading h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 300;
+    color: var(--green-deep);
+    letter-spacing: -0.02em;
+  }
+
+  .section-heading h2 em {
+    color: var(--green-bright);
+  }
+
+  .section-heading p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    max-width: 380px;
+    line-height: 1.6;
+  }
+
+  /* ── Topic Cards ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+
+  .topic-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-leaf);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeUp 0.5s ease both;
+    border: 1px solid rgba(74,140,92,0.08);
+  }
+
+  .topic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(26,58,42,0.2);
+  }
+
+  .card-accent {
+    height: 6px;
+  }
+
+  .card-body {
+    padding: 1.4rem 1.5rem 1.2rem;
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(74,140,92,0.1);
+  }
+
+  .card-tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tag-cell { background: #e8f5e9; color: #2e7d32; }
+  .tag-genetics { background: #e3f2fd; color: #1565c0; }
+  .tag-ecology { background: #f9fbe7; color: #558b2f; }
+  .tag-body { background: #fce4ec; color: #c62828; }
+  .tag-evolution { background: #f3e5f5; color: #6a1b9a; }
+  .tag-micro { background: #e0f7fa; color: #00695c; }
+
+  .card-arrow {
+    color: var(--green-bright);
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+  }
+
+  .topic-card:hover .card-arrow { transform: translateX(4px); }
+
+  /* ── Resources section ── */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .resource-item {
+    background: var(--white);
+    border: 1px solid rgba(74,140,92,0.12);
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .resource-item:hover {
+    border-color: var(--green-bright);
+    background: #f0f9f1;
+    transform: translateX(4px);
+  }
+
+  .resource-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .res-pdf { background: #fde8e8; }
+  .res-video { background: #e8f0fe; }
+  .res-img { background: #e8f5e9; }
+  .res-doc { background: #fff8e1; }
+
+  .resource-info { flex: 1; min-width: 0; }
+  .resource-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .resource-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .resource-download {
+    color: var(--green-bright);
+    font-size: 1rem;
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .resource-item:hover .resource-download { opacity: 1; }
+
+  /* ── Upload zone ── */
+  .upload-zone {
+    border: 2px dashed var(--green-pale);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(200,230,201,0.08);
+    position: relative;
+    margin-bottom: 3rem;
+  }
+
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--green-bright);
+    background: rgba(74,140,92,0.06);
+  }
+
+  .upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+
+  .upload-zone h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    margin-bottom: 0.4rem;
+  }
+
+  .upload-zone p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .upload-zone .btn-upload {
+    margin-top: 1.2rem;
+    display: inline-block;
+    padding: 0.6rem 1.6rem;
+    background: var(--green-bright);
+    color: white;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    pointer-events: none;
+  }
+
+  .upload-zone:hover .btn-upload {
+    background: var(--green-deep);
+  }
+
+  /* ── Accordion (temas expandibles) ── */
+  .accordion {
+    margin-bottom: 3rem;
+  }
+
+  .accordion-item {
+    background: var(--white);
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    border: 1px solid rgba(74,140,92,0.1);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .accordion-header {
+    padding: 1.1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+
+  .accordion-header:hover { background: rgba(74,140,92,0.04); }
+
+  .accordion-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .accordion-title {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+  }
+
+  .accordion-chevron {
+    color: var(--green-bright);
+    font-size: 0.9rem;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding: 0 1.5rem;
+  }
+
+  .accordion-item.open .accordion-body { max-height: 500px; }
+
+  .accordion-content {
+    padding: 0.5rem 0 1.3rem;
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+    border-top: 1px solid rgba(74,140,92,0.1);
+  }
+
+  .accordion-content ul {
+    margin: 0.6rem 0 0 1rem;
+  }
+
+  .accordion-content li {
+    margin-bottom: 0.3rem;
+  }
+
+  /* ── Info banner ── */
+  .info-banner {
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .info-banner::after {
+    content: '🧬';
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 5rem;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  .banner-text h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 0.4rem;
+  }
+
+  .banner-text p {
+    font-size: 0.85rem;
+    opacity: 0.75;
+    line-height: 1.6;
+    max-width: 480px;
+  }
+
+  .banner-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--lime);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: var(--green-deep);
+    color: rgba(200,230,201,0.6);
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.8rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer span { color: var(--lime); }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* stagger cards */
+  .topic-card:nth-child(1) { animation-delay: 0.05s; }
+  .topic-card:nth-child(2) { animation-delay: 0.1s; }
+  .topic-card:nth-child(3) { animation-delay: 0.15s; }
+  .topic-card:nth-child(4) { animation-delay: 0.2s; }
+  .topic-card:nth-child(5) { animation-delay: 0.25s; }
+  .topic-card:nth-child(6) { animation-delay: 0.3s; }
+
+  .resource-item:nth-child(1) { animation-delay: 0.05s; }
+  .resource-item:nth-child(2) { animation-delay: 0.1s; }
+  .resource-item:nth-child(3) { animation-delay: 0.15s; }
+  .resource-item:nth-child(4) { animation-delay: 0.2s; }
+  .resource-item:nth-child(5) { animation-delay: 0.25s; }
+
+  .accordion-item:nth-child(1) { animation-delay: 0.05s; }
+  .accordion-item:nth-child(2) { animation-delay: 0.1s; }
+  .accordion-item:nth-child(3) { animation-delay: 0.15s; }
+  .accordion-item:nth-child(4) { animation-delay: 0.2s; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .header-content { padding: 2rem 1.25rem 1.5rem; }
+    main { padding: 1.5rem 1.25rem 3rem; }
+    .info-banner { padding: 1.5rem; }
+    .info-banner::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+<header>
+  <div class="header-bg"></div>
+  <div class="cells-bg"></div>
+  <div class="header-content">
+    <div class="logo-area">
+      <h1>Bio<span>logía</span></h1>
+      <p>Portal de aprendizaje · Ciencias Naturales</p>
+    </div>
+    <div class="course-switcher">
+      <button class="course-btn active" onclick="switchCourse('1m', this)">1° Medio</button>
+      <button class="course-btn" onclick="switchCourse('2m', this)">2° Medio</button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ NAV ═══════════════════════════ -->
+<nav class="nav-bar">
+  <div class="nav-inner" id="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('temas', this)">Temas</button>
+    <button class="nav-tab" onclick="switchTab('contenido', this)">Contenido</button>
+    <button class="nav-tab" onclick="switchTab('recursos', this)">Recursos</button>
+    <button class="nav-tab" onclick="switchTab('subir', this)">Subir archivos</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+<main>
+
+  <!-- ─── 1° MEDIO ─── -->
+  <div class="course-section active" id="section-1m">
+
+    <!-- TAB: TEMAS -->
+    <div class="content-panel active" id="panel-1m-temas">
+      <div class="section-heading">
+        <div>
+          <h2>Temas de <em>1° Medio</em></h2>
+        </div>
+        <p>Unidades del año según el currículo MINEDUC. Haz clic en una tarjeta para más info.</p>
+      </div>
+
+      <div class="topics-grid">
+        <div class="topic-card" onclick="alert('Próximamente: módulo interactivo sobre la Célula')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #4a8c5c, #7bc47f);"></div>
+          <div class="card-body">
+            <span class="card-icon">🔬</span>
+            <div class="card-title">La Célula: Unidad de Vida</div>
+            <div class="card-desc">Estructura celular, orgánulos, diferencias entre células procariotas y eucariotas, y procesos vitales.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-cell">Célula</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo sobre Metabolismo')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #a8d85b, #4a8c5c);"></div>
+          <div class="card-body">
+            <span class="card-icon">⚡</span>
+            <div class="card-title">Metabolismo Celular</div>
+            <div class="card-desc">Fotosíntesis, respiración celular, fermentación y flujo de energía en los sistemas vivos.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-cell">Célula</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo sobre Genética')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #3a7ca5, #64b5f6);"></div>
+          <div class="card-body">
+            <span class="card-icon">🧬</span>
+            <div class="card-title">Bases de la Herencia</div>
+            <div class="card-desc">ADN, ARN, síntesis de proteínas, leyes de Mendel y herencia de caracteres.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-genetics">Genética</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo sobre Reproducción')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #e07060, #f48fb1);"></div>
+          <div class="card-body">
+            <span class="card-icon">🌱</span>
+            <div class="card-title">Reproducción y Desarrollo</div>
+            <div class="card-desc">Mitosis, meiosis, reproducción sexual y asexual, ciclos de vida y embriología básica.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-body">Reproducción</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo sobre Ecología')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #8bc34a, #cddc39);"></div>
+          <div class="card-body">
+            <span class="card-icon">🌿</span>
+            <div class="card-title">Ecología y Ecosistemas</div>
+            <div class="card-desc">Cadenas alimentarias, ciclos biogeoquímicos, biodiversidad y relaciones entre organismos.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-ecology">Ecología</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo sobre Microbiología')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #00acc1, #4dd0e1);"></div>
+          <div class="card-body">
+            <span class="card-icon">🦠</span>
+            <div class="card-title">Microorganismos y Salud</div>
+            <div class="card-desc">Bacterias, virus, hongos, sistema inmune y enfermedades infecciosas frecuentes.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-micro">Microbiología</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CONTENIDO -->
+    <div class="content-panel" id="panel-1m-contenido">
+      <div class="section-heading">
+        <div><h2>Contenido <em>1° Medio</em></h2></div>
+        <p>Material de estudio organizado por unidad. Haz clic para expandir.</p>
+      </div>
+
+      <div class="info-banner">
+        <div class="banner-text">
+          <h3>Programa de Biología · 1° Medio</h3>
+          <p>Este portal sigue el plan de estudios vigente del MINEDUC. Cada unidad incluye resúmenes, actividades y material de apoyo descargable.</p>
+        </div>
+        <div class="banner-stats">
+          <div class="stat"><span class="stat-num">6</span><span class="stat-label">Unidades</span></div>
+          <div class="stat"><span class="stat-num">18</span><span class="stat-label">Recursos</span></div>
+          <div class="stat"><span class="stat-num">4</span><span class="stat-label">Guías</span></div>
+        </div>
+      </div>
+
+      <div class="accordion" id="acc-1m">
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-row">
+              <span>🔬</span>
+              <span class="accordion-title">Unidad 1 — La Célula: Unidad de Vida</span>
+            </div>
+            <span class="accordion-chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              Estudio de la célula como unidad estructural y funcional de los seres vivos.
+              <ul>
+                <li>Teoría celular e historia de su descubrimiento</li>
+                <li>Célula procariota vs. eucariota</li>
+                <li>Orgánulos celulares y sus funciones</li>
+                <li>Membrana plasmática y transporte celular</li>
+                <li>Ciclo celular y división</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-row">
+              <span>⚡</span>
+              <span class="accordion-title">Unidad 2 — Metabolismo Celular</span>
+            </div>
+            <span class="accordion-chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              Cómo las células obtienen, transforman y utilizan la energía para sus procesos vitales.
+              <ul>
+                <li>ATP: molécula energética universal</li>
+                <li>Fotosíntesis: reacciones luminosas y ciclo de Calvin</li>
+                <li>Respiración celular aeróbica y anaeróbica</li>
+                <li>Fermentación y sus aplicaciones</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-row">
+              <span>🧬</span>
+              <span class="accordion-title">Unidad 3 — Bases de la Herencia</span>
+            </div>
+            <span class="accordion-chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              Mecanismos moleculares y genéticos que explican la transmisión de características hereditarias.
+              <ul>
+                <li>Estructura del ADN y el modelo de doble hélice</li>
+                <li>Replicación, transcripción y traducción</li>
+                <li>Leyes de Mendel (dominancia, segregación, combinación independiente)</li>
+                <li>Herencia ligada al sexo y excepciones mendelianas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-row">
+              <span>🌿</span>
+              <span class="accordion-title">Unidad 4 — Ecología y Ecosistemas</span>
+            </div>
+            <span class="accordion-chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              Relaciones entre los organismos y su ambiente, flujos de materia y energía.
+              <ul>
+                <li>Niveles de organización ecológica</li>
+                <li>Redes y cadenas tróficas</li>
+                <li>Ciclos del carbono, nitrógeno y agua</li>
+                <li>Biomas y biodiversidad chilena</li>
+                <li>Impacto humano y cambio climático</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: RECURSOS -->
+    <div class="content-panel" id="panel-1m-recursos">
+      <div class="section-heading">
+        <div><h2>Recursos <em>1° Medio</em></h2></div>
+        <p>Archivos disponibles para descargar. Más materiales se irán agregando.</p>
+      </div>
+
+      <div class="resources-grid">
+        <div class="resource-item">
+          <div class="resource-icon res-pdf">📄</div>
+          <div class="resource-info">
+            <div class="resource-name">Guía La Célula.pdf</div>
+            <div class="resource-meta">PDF · 2.4 MB · Unidad 1</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon res-video">🎬</div>
+          <div class="resource-info">
+            <div class="resource-name">Fotosíntesis explicada.mp4</div>
+            <div class="resource-meta">Video · 145 MB · Unidad 2</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon res-img">🖼️</div>
+          <div class="resource-info">
+            <div class="resource-name">Mapa célula eucariota.png</div>
+            <div class="resource-meta">Imagen · 3.1 MB · Unidad 1</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon res-doc">📝</div>
+          <div class="resource-info">
+            <div class="resource-name">Evaluación Genética.docx</div>
+            <div class="resource-meta">Word · 890 KB · Unidad 3</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon res-pdf">📄</div>
+          <div class="resource-info">
+            <div class="resource-name">Resumen Ecología.pdf</div>
+            <div class="resource-meta">PDF · 1.7 MB · Unidad 4</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: SUBIR -->
+    <div class="content-panel" id="panel-1m-subir">
+      <div class="section-heading">
+        <div><h2>Subir <em>archivos</em></h2></div>
+        <p>Agrega recursos para los estudiantes de 1° Medio. Se aceptan todos los formatos.</p>
+      </div>
+
+      <div class="upload-zone" id="drop-1m"
+        ondragover="event.preventDefault(); this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="handleDrop(event,'1m')">
+        <input type="file" multiple onchange="handleFiles(this.files,'1m')">
+        <span class="upload-icon">📂</span>
+        <h3>Arrastra archivos aquí o haz clic para seleccionar</h3>
+        <p>PDF, Word, imágenes, videos, código — cualquier formato<br>Tamaño máximo recomendado: 200 MB por archivo</p>
+        <span class="btn-upload">Seleccionar archivos</span>
+      </div>
+
+      <div id="uploaded-1m" style="margin-top: 1rem;"></div>
+    </div>
+
+  </div><!-- /section-1m -->
+
+  <!-- ─── 2° MEDIO ─── -->
+  <div class="course-section" id="section-2m">
+
+    <!-- TAB: TEMAS -->
+    <div class="content-panel active" id="panel-2m-temas">
+      <div class="section-heading">
+        <div><h2>Temas de <em>2° Medio</em></h2></div>
+        <p>Unidades del año según el currículo MINEDUC. Haz clic en una tarjeta para más info.</p>
+      </div>
+
+      <div class="topics-grid">
+        <div class="topic-card" onclick="alert('Próximamente: módulo de Evolución')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #7b1fa2, #ba68c8);"></div>
+          <div class="card-body">
+            <span class="card-icon">🦕</span>
+            <div class="card-title">Evolución y Selección Natural</div>
+            <div class="card-desc">Darwin, evidencias evolutivas, selección natural, deriva genética y especiación.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-evolution">Evolución</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo de Sistema Nervioso')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #e07060, #ef9a9a);"></div>
+          <div class="card-body">
+            <span class="card-icon">🧠</span>
+            <div class="card-title">Sistema Nervioso</div>
+            <div class="card-desc">Neurona, sinapsis, sistema nervioso central y periférico, reflejos y sentidos.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-body">Sistema nervioso</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo Endocrino')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #d4920a, #ffd54f);"></div>
+          <div class="card-body">
+            <span class="card-icon">⚗️</span>
+            <div class="card-title">Sistema Endocrino</div>
+            <div class="card-desc">Hormonas, glándulas, retroalimentación hormonal y regulación del organismo.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-body">Sistema endocrino</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo Genética Molecular')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #1565c0, #42a5f5);"></div>
+          <div class="card-body">
+            <span class="card-icon">💉</span>
+            <div class="card-title">Biotecnología y Genética Molecular</div>
+            <div class="card-desc">PCR, ingeniería genética, CRISPR, organismos transgénicos y bioética.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-genetics">Genética</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo de Ecología Aplicada')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #2e7d32, #81c784);"></div>
+          <div class="card-body">
+            <span class="card-icon">🌍</span>
+            <div class="card-title">Ecología Aplicada y Conservación</div>
+            <div class="card-desc">Crisis de biodiversidad, cambio climático, áreas protegidas y desarrollo sustentable.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-ecology">Ecología</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topic-card" onclick="alert('Próximamente: módulo Inmunología')">
+          <div class="card-accent" style="background: linear-gradient(90deg, #00695c, #4db6ac);"></div>
+          <div class="card-body">
+            <span class="card-icon">🛡️</span>
+            <div class="card-title">Inmunología y Enfermedades</div>
+            <div class="card-desc">Sistema inmune innato y adaptativo, vacunas, alergias, autoinmunidad y VIH.</div>
+            <div class="card-footer">
+              <span class="card-tag tag-micro">Inmunología</span>
+              <span class="card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CONTENIDO -->
+    <div class="content-panel" id="panel-2m-contenido">
+      <div class="section-heading">
+        <div><h2>Contenido <em>2° Medio</em></h2></div>
+        <p>Material de estudio organizado por unidad. Haz clic para expandir.</p>
+      </div>
+
+      <div class="info-banner" style="background: linear-gradient(135deg, #1a237e 0%, #283593 100%);">
+        <div class="banner-text">
+          <h3>Programa de Biología · 2° Medio</h3>
+          <p>Profundización de los conceptos con énfasis en biología humana, evolución y biotecnología. Sigue el plan MINEDUC actualizado.</p>
+        </div>
+        <div class="banner-stats">
+          <div class="stat"><span class="stat-num">6</span><span class="stat-label">Unidades</span></div>
+          <div class="stat"><span class="stat-num">22</span><span class="stat-label">Recursos</span></div>
+          <div class="stat"><span class="stat-num">5</span><span class="stat-label">Guías</span></div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-row">
+              <span>🦕</span>
+              <span class="accordion-title">Unidad 1 — Evolución y Selección Natural</span>
+            </div>
+            <span class="accordion-chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              Teorías evolutivas y mecanismos que explican la diversidad de la vida en la Tierra.
+              <ul>
+                <li>Historia del pensamiento evolutivo: Lamarck y Darwin</li>
+                <li>Evidencias de la evolución (fósiles, anatomía comparada, biología molecular)</li>
+                <li>Selección natural, artificial y sexual</li>
+                <li>Deriva genética y efecto fundador</li>
+                <li>Especiación y macroevolución</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-row">
+              <span>🧠</span>
+              <span class="accordion-title">Unidad 2 — Sistema Nervioso y Endocrino</span>
+            </div>
+            <span class="accordion-chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              Sistemas de regulación e integración del organismo humano.
+              <ul>
+                <li>Neurona: estructura y potencial de acción</li>
+                <li>Sinapsis química y eléctrica, neurotransmisores</li>
+                <li>Sistema nervioso central (encéfalo y médula espinal)</li>
+                <li>Glándulas endocrinas y sus hormonas</li>
+                <li>Retroalimentación y homeostasis hormonal</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-row">
+              <span>💉</span>
+              <span class="accordion-title">Unidad 3 — Biotecnología y Genética Molecular</span>
+            </div>
+            <span class="accordion-chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              Aplicaciones modernas de la biología molecular y sus implicancias éticas y sociales.
+              <ul>
+                <li>Técnicas de laboratorio: electroforesis, PCR, clonación</li>
+                <li>Ingeniería genética y organismos transgénicos</li>
+                <li>CRISPR-Cas9: edición génica</li>
+                <li>Aplicaciones en medicina, agricultura e industria</li>
+                <li>Bioética y regulación de la biotecnología</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-row">
+              <span>🛡️</span>
+              <span class="accordion-title">Unidad 4 — Inmunología y Salud</span>
+            </div>
+            <span class="accordion-chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-content">
+              Defensa del organismo frente a patógenos y alteraciones del sistema inmune.
+              <ul>
+                <li>Inmunidad innata: barreras físicas, fagocitosis, inflamación</li>
+                <li>Inmunidad adaptativa: linfocitos B y T, anticuerpos</li>
+                <li>Vacunas: tipos, mecanismos y controversias</li>
+                <li>Alergias, autoinmunidad e inmunodeficiencias</li>
+                <li>VIH/SIDA y enfermedades inmunosupresoras</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: RECURSOS 2M -->
+    <div class="content-panel" id="panel-2m-recursos">
+      <div class="section-heading">
+        <div><h2>Recursos <em>2° Medio</em></h2></div>
+        <p>Archivos disponibles para descargar. Más materiales se irán agregando.</p>
+      </div>
+
+      <div class="resources-grid">
+        <div class="resource-item">
+          <div class="resource-icon res-pdf">📄</div>
+          <div class="resource-info">
+            <div class="resource-name">Guía Evolución completa.pdf</div>
+            <div class="resource-meta">PDF · 3.2 MB · Unidad 1</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon res-video">🎬</div>
+          <div class="resource-info">
+            <div class="resource-name">Sistema Nervioso.mp4</div>
+            <div class="resource-meta">Video · 210 MB · Unidad 2</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon res-img">🖼️</div>
+          <div class="resource-info">
+            <div class="resource-name">Esquema CRISPR-Cas9.png</div>
+            <div class="resource-meta">Imagen · 1.8 MB · Unidad 3</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon res-doc">📝</div>
+          <div class="resource-info">
+            <div class="resource-name">Prueba Inmunología.docx</div>
+            <div class="resource-meta">Word · 760 KB · Unidad 4</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon res-pdf">📄</div>
+          <div class="resource-info">
+            <div class="resource-name">Resumen Biotecnología.pdf</div>
+            <div class="resource-meta">PDF · 2.0 MB · Unidad 3</div>
+          </div>
+          <span class="resource-download">⬇</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: SUBIR 2M -->
+    <div class="content-panel" id="panel-2m-subir">
+      <div class="section-heading">
+        <div><h2>Subir <em>archivos</em></h2></div>
+        <p>Agrega recursos para los estudiantes de 2° Medio. Se aceptan todos los formatos.</p>
+      </div>
+
+      <div class="upload-zone" id="drop-2m"
+        ondragover="event.preventDefault(); this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="handleDrop(event,'2m')">
+        <input type="file" multiple onchange="handleFiles(this.files,'2m')">
+        <span class="upload-icon">📂</span>
+        <h3>Arrastra archivos aquí o haz clic para seleccionar</h3>
+        <p>PDF, Word, imágenes, videos, código — cualquier formato<br>Tamaño máximo recomendado: 200 MB por archivo</p>
+        <span class="btn-upload">Seleccionar archivos</span>
+      </div>
+
+      <div id="uploaded-2m" style="margin-top: 1rem;"></div>
+    </div>
+
+  </div><!-- /section-2m -->
+
+</main>
+
+<footer>
+  Portal de Biología · <span>Ciencias Naturales</span> · Hecho con 🌿 para estudiantes chilenos
+</footer>
+
+<script>
+  const currentTab = { '1m': 'temas', '2m': 'temas' };
+  let activeCourse = '1m';
+
+  function switchCourse(course, btn) {
+    document.querySelectorAll('.course-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.course-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + course).classList.add('active');
+    activeCourse = course;
+    // restore tab for this course
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => {
+      if (t.textContent.toLowerCase().includes(currentTab[course].substring(0,5))) {
+        t.classList.add('active');
+      }
+    });
+    showTab(currentTab[course]);
+  }
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    currentTab[activeCourse] = tab;
+    showTab(tab);
+  }
+
+  function showTab(tab) {
+    const section = document.getElementById('section-' + activeCourse);
+    section.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById('panel-' + activeCourse + '-' + tab);
+    if (panel) panel.classList.add('active');
+  }
+
+  function toggleAccordion(header) {
+    const item = header.parentElement;
+    const isOpen = item.classList.contains('open');
+    // close all in same accordion
+    const siblings = item.parentElement.querySelectorAll('.accordion-item');
+    siblings.forEach(s => s.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  function handleFiles(files, course) {
+    const container = document.getElementById('uploaded-' + course);
+    for (const file of files) {
+      const ext = file.name.split('.').pop().toLowerCase();
+      const icons = { pdf: '📄', mp4: '🎬', mov: '🎬', png: '🖼️', jpg: '🖼️', jpeg: '🖼️', docx: '📝', doc: '📝', zip: '📦', py: '🐍', js: '📜' };
+      const icon = icons[ext] || '📁';
+      const size = file.size > 1048576 ? (file.size / 1048576).toFixed(1) + ' MB' : Math.round(file.size / 1024) + ' KB';
+      const item = document.createElement('div');
+      item.className = 'resource-item';
+      item.style.animation = 'fadeUp 0.4s ease both';
+      item.innerHTML = `
+        <div class="resource-icon res-doc">${icon}</div>
+        <div class="resource-info">
+          <div class="resource-name">${file.name}</div>
+          <div class="resource-meta">${ext.toUpperCase()} · ${size} · Recién subido</div>
+        </div>
+        <span style="color: var(--green-bright); font-size: 0.8rem;">✓</span>
+      `;
+      container.prepend(item);
+    }
+  }
+
+  function handleDrop(event, course) {
+    event.preventDefault();
+    document.getElementById('drop-' + course).classList.remove('drag-over');
+    handleFiles(event.dataTransfer.files, course);
+  }
+</script>
+
+</body>
+</html>
